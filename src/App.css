@@ -14,3 +14,18 @@ button {
 button:hover {
   color: white;
 }
+
+.info-message {
+  margin: 24px;
+  font-style: italic;
+}
+.redirect {
+  color: #ff8714;
+  cursor: pointer;
+}
+
+.home-icon {
+  height: 40px;
+  cursor: pointer;
+  margin-right: 4px;
+}

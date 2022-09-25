@@ -1,6 +1,8 @@
 import React from "react";
+
 import Header from "../components/Header";
 import SearchBar from "./../components/Searchbar";
+
 import styles from "./Home.module.scss";
 
 const Home = () => {

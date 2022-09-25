@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
 import api from "./../api/apiHandler";
 import Header from "./../components/Header";
+
+import noImage from "./../images/image-not-available.png";
+import homeIcon from "./../images/Home_icon_orange.png";
+import arrowBack from "./../images/arrow-back.png";
 import styles from "./DetailsView.module.scss";
 
 const DetailsView = () => {
@@ -18,12 +23,19 @@ const DetailsView = () => {
     setIsLoading(false);
   };
 
-  const allergensNicer =
-    productDetails?.allergens_hierarchy
+  const getNicerCategories = (product) => {
+    return product.categories.replaceAll(",", ", ");
+  };
+
+  const getNicerAllergens = (product) => {
+    return product.allergens_hierarchy
       ?.map((e) => e.replace("en:", ""))
-      .join(" | ") || "";
-  const categoriesNicer =
-    productDetails?.categories?.replaceAll(",", ", ") || "";
+      .join(" | ");
+  };
+
+  const getImage = (product) => {
+    return product.image_front_url || noImage;
+  };
 
   useEffect(() => {
     getProduct(params.id);
@@ -32,19 +44,43 @@ const DetailsView = () => {
   return (
     <>
       <Header>
-        <Link to="/">Home</Link>
-        <button onClick={() => navigate(-1)}>Back to results</button>
+        <div className={styles.headerContainer}>
+          <img
+            src={homeIcon}
+            alt="home"
+            className="home-icon"
+            onClick={() => navigate("/")}
+          />
+          <img
+            src={arrowBack}
+            alt="Go back"
+            className={styles.arrowBack}
+            onClick={() => navigate(-1)}
+          />
+        </div>
       </Header>
-      {isLoading && <div>Loading . . . </div>}
+      {isLoading && <div className="info-message">Loading . . . </div>}
+      {productDetails === undefined && (
+        <div className="info-message">
+          The product was not found in the database, please try a{" "}
+          <span className="redirect" onClick={() => navigate("/")}>
+            new search
+          </span>
+        </div>
+      )}
       {productDetails && (
         <div className={styles.productContainer}>
           <h2>{productDetails.product_name}</h2>
-          {categoriesNicer && <p>Categories: {categoriesNicer}</p>}
+          {productDetails.categories && (
+            <p>Categories: {getNicerCategories(productDetails)}</p>
+          )}
           <img
-            src={productDetails.image_front_url}
+            src={getImage(productDetails)}
             alt={productDetails.product_name}
           />
-          {allergensNicer && <p>Allergens: {allergensNicer}</p>}
+          {productDetails.allergens_hierarchy.length > 0 && (
+            <p>Allergens: {getNicerAllergens(productDetails)}</p>
+          )}
           {productDetails.ingredients_text && (
             <p>Ingredients: {productDetails.ingredients_text}</p>
           )}

@@ -1,8 +1,5 @@
 .headerContainer {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 8px 4px;
 }
 
 .listContainer {
@@ -47,6 +44,9 @@
 }
 
 @media (max-width: 768px) {
+  .headerContainer {
+    margin: 0 -8px;
+  }
   .productCard {
     width: 90vw;
     height: 200px;

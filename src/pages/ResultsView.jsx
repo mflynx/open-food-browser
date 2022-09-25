@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
+import api from "./../api/apiHandler";
 import SearchBar from "./../components/Searchbar";
 import Header from "../components/Header";
-import api from "./../api/apiHandler";
+
+import noImage from "./../images/image-not-available.png"
+import homeIcon from "./../images/Home_icon_orange.png";
 import styles from "./ResultsView.module.scss";
 
 const ResultsView = () => {
@@ -16,8 +20,16 @@ const ResultsView = () => {
     setIsLoading(true);
     const data = await api.searchFood(searchTerm);
     console.log("data :>> ", data);
-    setProductsList(data.products);
+    // filter out results with no ID or no name
+    const products = data.products.filter(
+      (p) => p.product_name !== undefined && p.id !== undefined
+    );
+    setProductsList(products);
     setIsLoading(false);
+  };
+
+  const getImageUrl = (product) => {
+    return product.image_front_small_url || noImage
   };
 
   useEffect(() => {
@@ -28,14 +40,20 @@ const ResultsView = () => {
     <>
       <Header>
         <div className={styles.headerContainer}>
-          <Link to="/">Home</Link>
+          {/* <Link to="/">Home</Link> */}
+        <img
+          src={homeIcon}
+          alt="home"
+          className="home-icon"
+          onClick={() => navigate("/")}
+        />
           <SearchBar />
         </div>
       </Header>
 
-      {isLoading && <div>Loading . . . </div>}
+      {isLoading && <div className="info-message">Loading . . . </div>}
       {!isLoading && productsList.length === 0 && (
-        <div>There is no match for your search.</div>
+        <div className="info-message">There is no match for your search.</div>
       )}
       {!isLoading && productsList.length > 0 && (
         <div className={styles.listContainer}>
@@ -47,7 +65,7 @@ const ResultsView = () => {
             >
               <div className={styles.imgWrapper}>
                 <img
-                  src={product.image_front_small_url}
+                  src={getImageUrl(product)}
                   alt={product.product_name}
                 />
               </div>
