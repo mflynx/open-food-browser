@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import styles from "./Searchbar.module.scss";
 
 const Searchbar = () => {
   const [input, setInput] = useState("");
@@ -20,7 +21,7 @@ const Searchbar = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <input
         value={input}
         onChange={(e) => setInput(e.target.value)}

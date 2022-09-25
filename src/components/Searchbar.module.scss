@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+
+  input,
+  button {
+    font-size: 1.2em;
+    padding: 8px 8px;
+  }
+  input {
+    width: 50vw;
+    margin-right: 8px;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    input {
+      flex: 3;
+    }
+    button {
+      flex: 1;
+    }
+  }
+}

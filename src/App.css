@@ -3,3 +3,14 @@
   margin: 0;
   padding: 0;
 }
+
+button {
+  background-color: #ff8714;
+  cursor: pointer;
+  border: 1px solid black;
+  padding: 4px;
+}
+
+button:hover {
+  color: white;
+}
