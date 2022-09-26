@@ -5,7 +5,7 @@ import api from "./../api/apiHandler";
 import SearchBar from "./../components/Searchbar";
 import Header from "../components/Header";
 
-import noImage from "./../images/image-not-available.png"
+import noImage from "./../images/image-not-available.png";
 import homeIcon from "./../images/Home_icon_orange.png";
 import styles from "./ResultsView.module.scss";
 
@@ -29,7 +29,7 @@ const ResultsView = () => {
   };
 
   const getImageUrl = (product) => {
-    return product.image_front_small_url || noImage
+    return product.image_front_small_url || noImage;
   };
 
   useEffect(() => {
@@ -40,13 +40,12 @@ const ResultsView = () => {
     <>
       <Header>
         <div className={styles.headerContainer}>
-          {/* <Link to="/">Home</Link> */}
-        <img
-          src={homeIcon}
-          alt="home"
-          className="home-icon"
-          onClick={() => navigate("/")}
-        />
+          <img
+            src={homeIcon}
+            alt="home"
+            className="home-icon"
+            onClick={() => navigate("/")}
+          />
           <SearchBar />
         </div>
       </Header>
@@ -56,23 +55,23 @@ const ResultsView = () => {
         <div className="info-message">There is no match for your search.</div>
       )}
       {!isLoading && productsList.length > 0 && (
-        <div className={styles.listContainer}>
-          {productsList.map((product) => (
-            <div
-              className={styles.productCard}
-              key={product.id}
-              onClick={() => navigate(`/product/${product.id}`)}
-            >
-              <div className={styles.imgWrapper}>
-                <img
-                  src={getImageUrl(product)}
-                  alt={product.product_name}
-                />
+        <>
+          <h3>Results for "<i>{params.searchTerm}</i>"</h3>
+          <div className={styles.listContainer}>
+            {productsList.map((product) => (
+              <div
+                className={styles.productCard}
+                key={product.id}
+                onClick={() => navigate(`/product/${product.id}`)}
+              >
+                <div className={styles.imgWrapper}>
+                  <img src={getImageUrl(product)} alt={product.product_name} />
+                </div>
+                <p>{product.product_name}</p>
               </div>
-              <p>{product.product_name}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
     </>
   );

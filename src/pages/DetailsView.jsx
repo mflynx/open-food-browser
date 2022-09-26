@@ -19,7 +19,16 @@ const DetailsView = () => {
     setIsLoading(true);
     const data = await api.getDetails(id);
     console.log("data :>> ", data);
-    setProductDetails(data.product);
+    // id is invalid, no product found
+    if (data.status === 0) {
+      setProductDetails(undefined);
+      // product found but has no name
+    } else if (!data.product.product_name) {
+      setProductDetails(undefined);
+      // product found, to be displayed
+    } else {
+      setProductDetails(data.product);
+    }
     setIsLoading(false);
   };
 
@@ -28,9 +37,15 @@ const DetailsView = () => {
   };
 
   const getNicerAllergens = (product) => {
-    return product.allergens_hierarchy
-      ?.map((e) => e.replace("en:", ""))
-      .join(" | ");
+    let langCodes = ["en:", "fr:", "de:", "es:"];
+    let nicerAllergens = product.allergens_hierarchy;
+    langCodes.forEach(
+      (code) =>
+        (nicerAllergens = nicerAllergens.map((allergen) =>
+          allergen.replace(code, "")
+        ))
+    );
+    return nicerAllergens.join(" | ");
   };
 
   const getImage = (product) => {
