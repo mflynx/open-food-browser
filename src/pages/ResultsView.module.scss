@@ -48,6 +48,22 @@ h3 {
   }
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+
+  img {
+    height: 1em;
+    cursor: pointer;
+  }
+
+  p {
+    margin: 0 12px 0;
+  }
+}
+
 @media (max-width: 768px) {
   .headerContainer {
     margin: 0 -8px;

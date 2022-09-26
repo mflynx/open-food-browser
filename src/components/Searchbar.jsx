@@ -9,7 +9,7 @@ const Searchbar = () => {
 
   const handleSearch = () => {
     if (input) {
-      navigate(`/search/${input}`);
+      navigate(`/search/${input}/page=1`);
     }
   };
   const handleEnter = (e) => {

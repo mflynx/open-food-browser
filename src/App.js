@@ -12,7 +12,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="search/:searchTerm" element={<ResultsView />} />
+          <Route path="search/:searchTerm/page=:page" element={<ResultsView />} />
           <Route path="product/:id" element={<DetailsView />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
