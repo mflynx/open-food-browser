@@ -1,6 +1,6 @@
 # Food Browser
 
-This project is a simple application made for searching food using the Open Food Facts API.
+This project is a simple application made for searching food using the [Open Food Facts](https://wiki.openfoodfacts.org/Main_Page) API.
 
 ## Technologies used
 
