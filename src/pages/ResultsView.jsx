@@ -12,9 +12,8 @@ import chevronRight from "./../images/chevron-icon-right.png";
 import styles from "./ResultsView.module.scss";
 
 const ResultsView = () => {
-  const [productsList, setProductsList] = useState([]);
+  const [results, setResults] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [totalPages, setTotalPages] = useState(null);
 
   const params = useParams();
   const navigate = useNavigate();
@@ -22,13 +21,17 @@ const ResultsView = () => {
   const getProducts = async (searchTerm, page) => {
     setIsLoading(true);
     const data = await api.searchFood(searchTerm, page);
-    console.log("data :>> ", data);
+    if (data === "error") {
+      setResults(undefined);
+      return setIsLoading(false);
+    }
     // filter out results with no ID or no name
     const products = data.products.filter(
       (p) => p.product_name !== undefined && p.id !== undefined
     );
-    setProductsList(products);
-    setTotalPages(Math.ceil(data.count / data.page_size));
+    // get total number of pages
+    const totalPages = Math.ceil(data.count / data.page_size);
+    setResults({ products, totalPages });
     setIsLoading(false);
   };
 
@@ -45,7 +48,7 @@ const ResultsView = () => {
 
   useEffect(() => {
     getProducts(params.searchTerm, params.page);
-  }, [params.searchTerm, params.page]);
+  }, [params]);
 
   return (
     <>
@@ -62,16 +65,23 @@ const ResultsView = () => {
       </Header>
 
       {isLoading && <div className="info-message">Loading . . . </div>}
-      {!isLoading && productsList.length === 0 && (
-        <div className="info-message">There is no match for your search.</div>
+      {!isLoading && results === undefined && (
+        <div className="info-message">
+          There was a network error, please try again later
+        </div>
       )}
-      {!isLoading && productsList.length > 0 && (
+      {!isLoading && results?.totalPages === 0 && (
+        <div className="info-message">
+          There is no match for your search "<i>{params.searchTerm}</i>".
+        </div>
+      )}
+      {!isLoading && results?.totalPages > 0 && (
         <>
           <h3>
             Results for "<i>{params.searchTerm}</i>"
           </h3>
           <div className={styles.listContainer}>
-            {productsList.map((product) => (
+            {results.products.map((product) => (
               <div
                 className={styles.productCard}
                 key={product.id}
@@ -93,9 +103,9 @@ const ResultsView = () => {
               />
             )}
             <p>
-              Page {currentPage} of {totalPages}
+              Page {currentPage} of {results.totalPages}
             </p>
-            {totalPages > currentPage && (
+            {results?.totalPages > currentPage && (
               <img
                 onClick={() => handleChangePage("next")}
                 src={chevronRight}

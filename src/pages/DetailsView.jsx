@@ -18,7 +18,6 @@ const DetailsView = () => {
   const getProduct = async (id) => {
     setIsLoading(true);
     const data = await api.getDetails(id);
-    console.log("data :>> ", data);
     // id is invalid, no product found
     if (data.status === 0) {
       setProductDetails(undefined);

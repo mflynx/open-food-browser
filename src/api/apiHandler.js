@@ -8,10 +8,10 @@ const api = {
       const res = await axios.get(
         `${baseURL}/cgi/search.pl?search_terms=${searchTerm}&search_simple=1&action=process&fields=id%2Cproduct_name%2Cimage_front_small_url&json=1&page=${page}&page_size=24`
       );
-      console.log("res", res);
       return res.data;
     } catch (e) {
       console.error(e);
+      return "error"
     }
   },
   async getDetails(productId) {
